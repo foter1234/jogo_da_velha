@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Costelão 2026 – Jogo da Memória</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══════════════════════════════════════════════
+       SPONSORS BAR
+  ═══════════════════════════════════════════════ -->
+  <div id="sponsors">
+    <div id="sponsors-brand">
+      <img src="https://res.cloudinary.com/dg9cpkold/image/upload/v1775921411/churrasco_sem_fundo_hjcqm4.png" alt="Costelão 2026" />
+      <span class="event-title-text"><span class="event-title-number">4º</span><span class="event-title-main"><span class="event-title-initial">C</span>ostelão <span class="event-title-initial">S</span>olidário</span></span>
+    </div>
+    <div id="sponsors-right">
+      <div id="sponsors-label">✦ Apoiadores ✦</div>
+      <div id="sponsors-track-wrapper">
+        <div id="sponsors-track">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       HUD
+  ═══════════════════════════════════════════════ -->
+  <div id="hud">
+    <div id="hud-stats">
+      <div class="stat-box">
+        <div class="stat-label">Tempo</div>
+        <div class="stat-value" id="timer-value">75</div>
+        <div id="progress-bar-wrap" style="display:none">
+          <div id="progress-bar" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Tentativas</div>
+        <div class="stat-value" id="attempts-value">0 / 22</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Pares</div>
+        <div class="stat-value" id="pairs-value">0 / 10</div>
+      </div>
+    </div>
+    <div id="hud-actions">
+      <button id="btn-restart" class="hidden">↺ Reiniciar</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       BOARD AREA
+  ═══════════════════════════════════════════════ -->
+  <div id="board-area">
+    <div id="game-board">
+      <!-- cards injected by JS -->
+    </div>
+    <div id="start-screen">
+      <button id="btn-start-main">▶ Iniciar Jogo</button>
+    </div>
+  </div>
+
+  <div id="footer">Costelão 2026</div>
+</div>
+
+<div id="dev-credit">
+  <span>Desenvolvido por Teora Solutions</span>
+  <img src="https://res.cloudinary.com/dg9cpkold/image/upload/v1775924824/Logotipo-C_bellmh.png" alt="Teora Solutions" />
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     OVERLAY (win / lose / idle)
+═══════════════════════════════════════════════ -->
+<div id="overlay">
+  <div class="overlay-title" id="overlay-title">Parabéns! 🎉</div>
+  <div class="overlay-sub" id="overlay-sub">Retire seu brinde com a equipe!</div>
+  <div id="win-sponsors-wrap" style="display:none">
+    <div class="win-sponsors-label">Apoiadores</div>
+    <div id="win-sponsors"></div>
+  </div>
+  <div class="overlay-countdown" id="overlay-countdown"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script src="script.js"></script>
+</body>
+</html>
