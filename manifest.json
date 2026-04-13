@@ -1,14 +1,12 @@
 {
-  "name": "Jogo da Velha",
-  "short_name": "Velha",
-  "description": "Jogo da Velha moderno com placar, histórico e suporte offline.",
+  "name": "Costelão 2026 — Jogos",
+  "short_name": "Costelão Jogos",
+  "description": "Jogo da Velha e Jogo da Memória — 4º Costelão Solidário",
   "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0a0a0f",
-  "theme_color": "#0a0a0f",
-  "lang": "pt-BR",
-  "categories": ["games", "entertainment"],
+  "background_color": "#c8b090",
+  "theme_color": "#c8b090",
+  "orientation": "any",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -21,15 +19,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Nova Partida",
-      "short_name": "Jogar",
-      "description": "Iniciar uma nova partida",
-      "url": "./index.html",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

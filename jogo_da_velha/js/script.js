@@ -1,11 +1,10 @@
 /**
  * JOGO DA VELHA — FUNCIONAL E COMPLETO
  * IndexedDB puro + Supabase backup manual
+ *
+ * CONFIGURAÇÃO: edite js/config.js (NÃO commitado no Git)
  */
-
-const SUPABASE_URL = 'https://lfemaaetrqbvmdnvhcoy.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_-HoyrJL7YFeQhgKTggqwdA_jXqKzJZK';
-const SUPA_OK = !SUPABASE_URL.includes('SEU_PROJETO');
+const SUPA_OK = typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL.includes('SEU_PROJETO');
 
 /* ────────────── IndexedDB ────────────── */
 const DB = (() => {
