@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="Jogo da Velha moderno com PWA, placar e histórico de vencedores." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Velha" />
+  <title>Jogo da Velha</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── STATUS BAR ───────────────────────────── -->
+  <div id="status-bar">
+    <span id="connection-status" class="dot offline">● Offline</span>
+    <span id="sync-status" class="sync-label"></span>
+  </div>
+
+  <!-- ── MAIN LAYOUT ──────────────────────────── -->
+  <main class="layout">
+
+    <!-- LEFT PANEL: scoreboard -->
+    <aside class="panel panel-left" id="score-panel">
+      <h2 class="panel-title">Placar</h2>
+      <div class="score-grid">
+        <div class="score-card" id="score-x">
+          <span class="score-symbol x-color">✕</span>
+          <span class="score-name" id="name-x">Jogador X</span>
+          <span class="score-value" id="val-x">0</span>
+        </div>
+        <div class="score-card draw-card">
+          <span class="score-symbol draw-color">—</span>
+          <span class="score-name">Empates</span>
+          <span class="score-value" id="val-draw">0</span>
+        </div>
+        <div class="score-card" id="score-o">
+          <span class="score-symbol o-color">◯</span>
+          <span class="score-name" id="name-o">Jogador O</span>
+          <span class="score-value" id="val-o">0</span>
+        </div>
+      </div>
+      <div class="best-of">
+        <span class="best-label">Melhor de 3</span>
+        <div class="bo3-track">
+          <span class="bo3-dot" id="bo3-x-1"></span>
+          <span class="bo3-dot" id="bo3-x-2"></span>
+          <span class="bo3-sep">vs</span>
+          <span class="bo3-dot" id="bo3-o-1"></span>
+          <span class="bo3-dot" id="bo3-o-2"></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: game board -->
+    <section class="game-center">
+      <header class="game-header">
+        <h1 class="game-title">Jogo <em>da Velha</em></h1>
+        <p class="turn-indicator" id="turn-indicator">
+          Vez de <strong id="current-player-name">Jogador X</strong>
+        </p>
+      </header>
+
+      <div class="board-wrap">
+        <div class="board" id="board" role="grid" aria-label="Tabuleiro">
+          <button class="cell" data-idx="0" aria-label="Célula 1"></button>
+          <button class="cell" data-idx="1" aria-label="Célula 2"></button>
+          <button class="cell" data-idx="2" aria-label="Célula 3"></button>
+          <button class="cell" data-idx="3" aria-label="Célula 4"></button>
+          <button class="cell" data-idx="4" aria-label="Célula 5"></button>
+          <button class="cell" data-idx="5" aria-label="Célula 6"></button>
+          <button class="cell" data-idx="6" aria-label="Célula 7"></button>
+          <button class="cell" data-idx="7" aria-label="Célula 8"></button>
+          <button class="cell" data-idx="8" aria-label="Célula 9"></button>
+        </div>
+        <svg class="win-line-svg" id="win-line-svg" viewBox="0 0 300 300" preserveAspectRatio="none">
+          <line id="win-line" x1="0" y1="0" x2="0" y2="0" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- result banner -->
+      <div class="result-banner" id="result-banner" hidden>
+        <p class="result-text" id="result-text"></p>
+        <div class="result-actions">
+          <button class="btn btn-primary" id="next-btn">Próxima Rodada</button>
+          <button class="btn btn-ghost" id="reset-series-btn">Nova Série</button>
+        </div>
+      </div>
+
+      <div class="game-controls">
+        <button class="btn btn-ghost small" id="restart-btn">↺ Reiniciar partida</button>
+        <button class="btn btn-ghost small" id="edit-names-btn">✎ Nomes</button>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: recent winners -->
+    <aside class="panel panel-right" id="winners-panel">
+      <h2 class="panel-title">Últimos Vencedores</h2>
+      <ul class="winners-list" id="winners-list">
+        <li class="empty-state">Nenhum vencedor ainda.</li>
+      </ul>
+      <button class="btn btn-outline full-width" id="history-btn">Ver histórico completo</button>
+    </aside>
+
+  </main>
+
+  <!-- ── MODAL: edit names ─────────────────────── -->
+  <div class="modal-overlay" id="names-modal" hidden role="dialog" aria-modal="true" aria-labelledby="names-modal-title">
+    <div class="modal">
+      <h3 id="names-modal-title">Editar Nomes</h3>
+      <label class="field-label">Jogador X
+        <input type="text" id="input-name-x" maxlength="20" placeholder="Jogador X" />
+      </label>
+      <label class="field-label">Jogador O
+        <input type="text" id="input-name-o" maxlength="20" placeholder="Jogador O" />
+      </label>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="save-names-btn">Salvar</button>
+        <button class="btn btn-ghost" id="cancel-names-btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: full history ───────────────────── -->
+  <div class="modal-overlay" id="history-modal" hidden role="dialog" aria-modal="true" aria-labelledby="history-modal-title">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h3 id="history-modal-title">Histórico Completo</h3>
+        <button class="close-btn" id="close-history-btn" aria-label="Fechar">✕</button>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr><th>#</th><th>Vencedor</th><th>Data</th><th>Hora</th></tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-ghost full-width" id="clear-history-btn">🗑 Limpar histórico</button>
+    </div>
+  </div>
+
+  <!-- ── TOAST ─────────────────────────────────── -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
