@@ -228,12 +228,14 @@
     #hud {
       grid-area: hud;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
+      justify-content: center;
       padding: clamp(8px, 1.2vw, 14px) clamp(16px, 2.5vw, 32px);
       background: linear-gradient(180deg, rgba(255,250,241,0.92) 0%, rgba(227,204,176,0.78) 100%);
       border-bottom: 1px solid rgba(122,78,43,0.25);
       gap: clamp(10px, 1.5vw, 16px);
+      flex-wrap: wrap;
     }
 
     #hud-stats {
@@ -242,6 +244,13 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
+    }
+
+    #hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .stat-box {
@@ -296,13 +305,6 @@
     }
     #btn-restart:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(90,57,32,0.3); }
     #btn-restart.hidden { display: none; }
-
-    #hud-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
 
     /* PATROCINADORES ABAIXO DAS STATS */
     #hud-sponsors-totem {
@@ -811,8 +813,7 @@
   }
 
   #sponsors-right,
-  #sponsors-label,
-  #btn-restart {
+  #sponsors-label {
     display: none !important;
   }
 
@@ -856,6 +857,17 @@
 
   .stat-value {
     font-size: 18px;
+  }
+
+  #hud-actions {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #btn-restart {
+    padding: 6px 14px;
+    font-size: 12px;
   }
 
   #board-area {
@@ -1194,7 +1206,7 @@ function startGame() {
   state.attempts  = 0;
   state.pairsFound= 0;
   state.timeLeft  = CONFIG.timeLimit;
-  state.locked    = false;
+  state.locked    = true;
   state.gameOver  = false;
   state.idleActive= false;
 
@@ -1203,6 +1215,8 @@ function startGame() {
   updateHUD();
   startTimer();
   resetIdleTimer();
+  
+  setTimeout(() => { state.locked = false; }, 150);
 }
 
 function backToStartScreen() {
@@ -1505,13 +1519,15 @@ document.getElementById('btn-restart').addEventListener('touchstart', (e) => {
   backToStartScreen();
 }, { passive: false });
 
-document.getElementById('btn-start-main').addEventListener('click', () => {
+document.getElementById('btn-start-main').addEventListener('click', (e) => {
+  e.stopPropagation();
   ensureAudio();
   startGame();
 });
 
 document.getElementById('btn-start-main').addEventListener('touchstart', (e) => {
   e.preventDefault();
+  e.stopPropagation();
   ensureAudio();
   startGame();
 }, { passive: false });
