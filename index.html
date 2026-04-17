@@ -41,14 +41,19 @@
      HEADER
   ══════════════════════════════ */
   header {
-    background: linear-gradient(135deg, #5a2d0c 0%, #3e1f08 100%);
+    background:
+        radial-gradient(120% 90% at 8% 100%, rgba(255,124,48,0.22) 0%, transparent 52%),
+        radial-gradient(90% 80% at 92% 0%, rgba(255,161,72,0.18) 0%, transparent 45%),
+        repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 8px, rgba(0,0,0,0.04) 8px 16px),
+        linear-gradient(145deg, #4b2a13 0%, #6c3b1a 36%, #8a4d23 64%, #5a3016 100%);
+      border-bottom: 2px solid #d88942;
+      box-shadow: 0 6px 22px rgba(63,31,12,0.38), inset 0 1px 0 rgba(255,222,181,0.18);
     width: 100%;
     padding: 10px 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     flex-wrap: wrap;
     flex-shrink: 0;
   }
@@ -357,8 +362,8 @@
   ══════════════════════════════ */
   @media (orientation: portrait) and (min-height: 900px) and (max-width: 1200px) {
     body {
-      width: min(100vw, calc(100dvh * 0.5544));
-      margin: 0 auto;
+      width: 100vw;
+      margin: 0;
     }
 
     header { padding: clamp(14px, 1.8vh, 22px) clamp(14px, 3vw, 24px); }
@@ -368,23 +373,25 @@
     main {
       padding: clamp(12px, 1.8vh, 20px) clamp(16px, 3vw, 22px);
       align-items: center;
+      justify-content: center;
     }
 
     .content-wrapper {
-      max-width: min(90vw, 520px);
+      max-width: min(92vw, 640px);
       gap: clamp(18px, 2.6vh, 28px);
+      margin: 0 auto;
     }
 
     .sponsors-section { gap: clamp(12px, 2vw, 18px); width: 100%; }
     .sponsor-item { gap: clamp(8px, 1.2vh, 12px); }
     .sponsor-logo-box {
-      height: clamp(96px, 12vh, 140px);
+      height: clamp(100px, 14vh, 160px);
       padding: 12px 14px;
       border-radius: 12px;
     }
     .sponsor-logo-box img { max-height: 100%; max-width: 100%; object-fit: contain; transform: scale(1.08); }
     .qr-box {
-      max-width: min(24vw, 140px);
+      max-width: min(26vw, 160px);
       padding: 10px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.16);
@@ -392,7 +399,7 @@
     .qr-label { font-size: clamp(0.58rem, 0.95vw, 0.75rem); letter-spacing: 1px; }
 
     .game-card-costelao {
-      max-width: min(82vw, 360px);
+      max-width: min(84vw, 420px);
       width: 100%;
       margin-top: 0;
     }
