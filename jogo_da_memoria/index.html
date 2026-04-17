@@ -312,19 +312,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #FFFFFF;
       border-radius: 12px;
       padding: 14px 32px;
-      min-width: 220px;
-      height: 80px;
-      box-shadow: 0 3px 16px rgba(0,0,0,0.15);
+      min-width: 300px;
+      height: 150px;
+      box-shadow: 0 3px 16px rgba(138, 137, 137, 0.267);
     }
 
-    .hud-sponsor-card img {
-      max-height: 52px;
-      max-width: 100%;
-      object-fit: contain;
-    }
+   .hud-sponsor-card img {
+  max-height: 205px;   /* Era 52px - Logo bem maior */
+  max-width: 220px;   /* Garante que a logo larga não corte */
+  object-fit: contain;
+}
 
     #start-screen {
       position: absolute;
@@ -944,7 +943,7 @@
     <!-- PATROCINADORES ABAIXO DAS STATS (APENAS TOTEM) -->
     <div id="hud-sponsors-totem">
       <div class="hud-sponsor-card">
-        <img src="../img/360.jpg" alt="Se Liga 360" />
+        <img src="../img/360.PNG" alt="Se Liga 360" />
       </div>
       <div class="hud-sponsor-card">
         <img src="../img/teora.png" alt="Teora Solutions" />
