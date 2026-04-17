@@ -23,15 +23,18 @@
   html, body { 
     height: 100%; 
     width: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
   body {
     font-family: 'Georgia', serif;
     background: linear-gradient(180deg, #c8b090 0%, #d4b896 100%);
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   /* ══════════════════════════════
@@ -80,8 +83,9 @@
   ══════════════════════════════ */
   main {
     flex: 1;
+    min-height: 0;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     padding: 20px 16px 16px;
     width: 100%;
@@ -91,10 +95,13 @@
   .content-wrapper {
     width: 100%;
     max-width: 400px;
+    max-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 16px;
+    overflow: hidden;
   }
 
   /* ══════════════════════════════
@@ -346,59 +353,75 @@
   }
 
   /* ══════════════════════════════
-     TOTEM (945x1940) - CARD BEM ESTICADO
+     TOTEM / KIOSK 603x1088
   ══════════════════════════════ */
-  @media (min-height: 1400px) and (max-width: 1000px) {
-    header { padding: 36px 20px 28px; }
-    .header-logo { width: 130px; height: 130px; }
-    .header-title { font-size: 2.4rem; }
+  @media (orientation: portrait) and (min-height: 900px) and (max-width: 1200px) {
+    body {
+      width: min(100vw, calc(100dvh * 0.5544));
+      margin: 0 auto;
+    }
 
-    main { padding: 32px 20px 24px; align-items: flex-start; }
+    header { padding: clamp(14px, 1.8vh, 22px) clamp(14px, 3vw, 24px); }
+    .header-logo { width: clamp(86px, 12vw, 112px); height: clamp(86px, 12vw, 112px); }
+    .header-title { font-size: clamp(1.6rem, 2.8vw, 2rem); }
+
+    main {
+      padding: clamp(12px, 1.8vh, 20px) clamp(16px, 3vw, 22px);
+      align-items: center;
+    }
 
     .content-wrapper {
-      max-width: 900px;
-      gap: 110px;
+      max-width: min(90vw, 520px);
+      gap: clamp(18px, 2.6vh, 28px);
     }
 
-    .sponsors-section { gap: 32px; width: 100%; }
-    .sponsor-item { gap: 16px; }
-    .sponsor-logo-box { height: 260px; padding: 16px 20px; border-radius: 14px; background: transparent; }
-    .sponsor-logo-box img { max-height: 220px; max-width: 100%; object-fit: contain; }
-    .qr-box { max-width: 340px; padding: 20px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-    .qr-label { font-size: 0.95rem; letter-spacing: 1.5px; }
+    .sponsors-section { gap: clamp(12px, 2vw, 18px); width: 100%; }
+    .sponsor-item { gap: clamp(8px, 1.2vh, 12px); }
+    .sponsor-logo-box {
+      height: clamp(96px, 12vh, 140px);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+    .sponsor-logo-box img { max-height: 100%; max-width: 100%; object-fit: contain; transform: scale(1.08); }
+    .qr-box {
+      max-width: min(24vw, 140px);
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+    }
+    .qr-label { font-size: clamp(0.58rem, 0.95vw, 0.75rem); letter-spacing: 1px; }
 
     .game-card-costelao {
-      max-width: 640px;
+      max-width: min(82vw, 360px);
       width: 100%;
-      margin-top: 30px;
+      margin-top: 0;
     }
 
-    /* ✅ CARD ESTICADO VERTICALMENTE */
     .game-card-costelao-inner {
-      padding: 96px 56px;
-      min-height: 500px; /* ✅ AUMENTADO */
-      border-radius: 28px;
-      border-width: 4px;
-      gap: 44px; /* ✅ MAIS RESPIRO INTERNO */
-      box-shadow: 0 20px 68px rgba(0,0,0,0.32);
+      padding: clamp(24px, 3.2vh, 34px) clamp(18px, 4vw, 24px);
+      min-height: clamp(180px, 24vh, 260px);
+      border-radius: 20px;
+      border-width: 3px;
+      gap: clamp(12px, 1.8vh, 18px);
+      box-shadow: 0 14px 38px rgba(0,0,0,0.24);
     }
 
-    .game-icon-costelao { font-size: 136px; }
-    .game-name-costelao { font-size: 3.8rem; }
-    .game-desc-costelao { font-size: 1.7rem; }
+    .game-icon-costelao { font-size: clamp(52px, 8vw, 72px); }
+    .game-name-costelao { font-size: clamp(1.5rem, 3vw, 2rem); }
+    .game-desc-costelao { font-size: clamp(0.9rem, 1.4vw, 1rem); }
     .game-btn-costelao {
-      padding: 32px 88px;
-      font-size: 2.2rem;
-      border-radius: 16px;
-      letter-spacing: 4px;
+      padding: clamp(12px, 1.6vh, 16px) clamp(24px, 5vw, 34px);
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      border-radius: 12px;
+      letter-spacing: 2px;
     }
 
-    footer { padding: 24px 20px; }
-    .footer-text { font-size: 1.05rem; letter-spacing: 2.5px; }
-    .footer-divider { height: 45px; width: 2px; }
-    .footer-dev { padding: 10px 18px; }
-    .footer-dev span { font-size: 0.9rem; }
-    .footer-dev img { height: 34px; }
+    footer { padding: clamp(10px, 1.2vh, 14px) 14px; }
+    .footer-text { font-size: clamp(0.68rem, 0.95vw, 0.8rem); letter-spacing: 1.6px; }
+    .footer-divider { height: 28px; width: 1px; }
+    .footer-dev { padding: 6px 10px; }
+    .footer-dev span { font-size: clamp(0.58rem, 0.82vw, 0.68rem); }
+    .footer-dev img { height: clamp(16px, 2vh, 22px); }
   }
 
   /* ══════════════════════════════
@@ -439,7 +462,7 @@
       4<sup>o</sup> Costelão Solidário
     </div>
   </header>
-    <br/>
+
   <!-- MAIN -->
   <main>
     <div class="content-wrapper">
