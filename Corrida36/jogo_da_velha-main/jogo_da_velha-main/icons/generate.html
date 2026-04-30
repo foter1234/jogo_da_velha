@@ -1,0 +1,54 @@
+/**
+ * Gera os ícones PNG automaticamente e salva na pasta icons/
+ * Execute uma vez no localhost:8080
+ */
+(async function generateIcons() {
+  const sizes = [192, 512];
+
+  for (const size of sizes) {
+    const c = document.createElement('canvas');
+    c.width = size; c.height = size;
+    const ctx = c.getContext('2d');
+
+    // Fundo marrom escuro arredondado
+    const r = size * 0.15;
+    ctx.fillStyle = '#5a2d0c';
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.arcTo(size, 0, size, size, r);
+    ctx.arcTo(size, size, 0, size, r);
+    ctx.arcTo(0, size, 0, 0, r);
+    ctx.arcTo(0, 0, size, 0, r);
+    ctx.closePath();
+    ctx.fill();
+
+    // Emoji central
+    ctx.font = `${size * 0.42}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎮', size / 2, size / 2);
+
+    // Download automático
+    const blob = await new Promise(ok => c.toBlob(ok, 'image/png'));
+    const file = new File([blob], `icon-${size}.png`, { type: 'image/png' });
+
+    // Salva via File System API (Chrome) ou download
+    try {
+      const dir = await window.showDirectoryPicker({ mode: 'readwrite' });
+      const handle = await dir.getFileHandle(`icon-${size}.png`, { create: true });
+      const w = await handle.createWritable();
+      await w.write(blob);
+      await w.close();
+      console.log(`✓ icon-${size}.png salvo!`);
+    } catch(e) {
+      // Fallback: download normal
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `icon-${size}.png`;
+      a.click();
+      console.log(`✓ icon-${size}.png baixado!`);
+    }
+  }
+
+  alert('Ícones gerados! Verifique a pasta icons/');
+})();

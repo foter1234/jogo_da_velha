@@ -1,0 +1,13 @@
+# Arquivos gerados
+icons/*.png
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
