@@ -618,6 +618,26 @@
       cursor: pointer;
     }
 
+    .overlay-apoiadores {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      animation: title-appear 0.6s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .overlay-apoiadores img {
+      height: 48px;
+      width: auto;
+      max-width: 140px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 10px;
+      padding: 6px 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
     .overlay-title {
       font-size: clamp(36px, 9vw, 88px);
       font-weight: bold;
@@ -729,6 +749,61 @@
       box-shadow: 0 0 8px var(--fire2);
     }
 
+    #difficulty-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.55);
+      border: 1.5px solid rgba(0,48,135,0.22);
+      border-radius: 12px;
+      padding: clamp(6px, 0.8vw, 10px) clamp(8px, 1.2vw, 14px);
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .diff-label {
+      font-size: clamp(9px, 1.2vw, 12px);
+      letter-spacing: clamp(1px, 0.3vw, 2px);
+      text-transform: uppercase;
+      color: var(--wood);
+    }
+
+    .diff-btns {
+      display: flex;
+      gap: clamp(2px, 0.3vw, 4px);
+    }
+
+    .diff-btn {
+      padding: clamp(3px, 0.4vw, 5px) clamp(5px, 0.8vw, 9px);
+      border: 1.5px solid rgba(0,48,135,0.3);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--wood);
+      font-size: clamp(8px, 1.1vw, 11px);
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      font-family: 'Georgia', serif;
+      line-height: 1.2;
+    }
+
+    .diff-btn.active {
+      background: linear-gradient(135deg, #003087, #0052cc);
+      color: #fff;
+      border-color: #0052cc;
+    }
+
+    .diff-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    #diff-cycle-btn { display: none; }
+
     @media (max-width: 600px) {
       #hud { padding: clamp(6px, 1vw, 10px) clamp(12px, 2vw, 18px); gap: 6px; }
       #hud-stats { gap: clamp(8px, 1.2vw, 12px); }
@@ -803,9 +878,33 @@
   }
 
   #sponsors-right,
-  #sponsors-label,
-  #btn-restart {
+  #sponsors-label {
     display: none !important;
+  }
+
+  #diff-cycle-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.55);
+    border: 1.5px solid rgba(0,48,135,0.22);
+    border-radius: 12px;
+    padding: 6px 8px;
+    min-width: 88px;
+    color: var(--wood);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.12s;
+    font-family: 'Georgia', serif;
+  }
+  #diff-cycle-btn:active {
+    transform: scale(0.92);
+    background: rgba(0,80,180,0.12);
+  }
+  #diff-cycle-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 
   #hud-sponsors-totem {
@@ -832,6 +931,8 @@
     padding: 8px 12px 4px;
     gap: 8px;
   }
+
+  #difficulty-selector { display: none; }
 
   #hud-stats {
     gap: 8px;
@@ -900,6 +1001,18 @@
 
   <div id="hud">
     <div id="hud-stats">
+      <button id="diff-cycle-btn">
+        <span class="stat-label">Nível</span>
+        <span class="stat-value" id="diff-cycle-label">Médio</span>
+      </button>
+      <div id="difficulty-selector">
+        <div class="diff-label">Nível</div>
+        <div class="diff-btns">
+          <button class="diff-btn" data-diff="easy">Fácil</button>
+          <button class="diff-btn active" data-diff="medium">Médio</button>
+          <button class="diff-btn" data-diff="hard">Difícil</button>
+        </div>
+      </div>
       <div class="stat-box">
         <div class="stat-label">Tempo</div>
         <div class="stat-value" id="timer-value">60</div>
@@ -958,6 +1071,10 @@
 <div id="overlay">
   <div class="overlay-title" id="overlay-title">Parabens!</div>
   <div class="overlay-sub" id="overlay-sub">Retire seu brinde com a equipe!</div>
+  <div class="overlay-apoiadores">
+    <img src="../img/360.jpg" alt="Se Liga 360" />
+    <img src="../img/teora.png" alt="Teora Solutions" />
+  </div>
   <div id="win-sponsors-wrap" style="display:none">
     <div class="win-sponsors-label">Apoiadores</div>
     <div id="win-sponsors"></div>
@@ -977,6 +1094,22 @@ const CONFIG = {
   cols: 4,
   rows: 5,
 };
+
+const DIFFICULTIES = {
+  easy:   { timeLimit: 75, maxAttempts: 35, cols: 4, rows: 4 },
+  medium: { timeLimit: 60, maxAttempts: 30, cols: 4, rows: 5 },
+  hard:   { timeLimit: 45, maxAttempts: 30, cols: 4, rows: 5 },
+};
+
+let currentDifficulty = 'medium';
+
+const DIFF_CYCLE  = ['easy', 'medium', 'hard'];
+const DIFF_LABELS = { easy: 'Fácil', medium: 'Médio', hard: 'Difícil' };
+
+function cycleDifficulty() {
+  const next = DIFF_CYCLE[(DIFF_CYCLE.indexOf(currentDifficulty) + 1) % DIFF_CYCLE.length];
+  setDifficulty(next);
+}
 
 const SPONSORS = [
   {
@@ -1001,7 +1134,7 @@ const CARD_TYPES = [
   { id: 7,  emoji: '🤸', label: 'Atletismo',    bg: 'linear-gradient(135deg,#002266,#0052cc)', highlight: '#4d88ff' },
   { id: 8,  emoji: '🏋️', label: 'Treino',       bg: 'linear-gradient(135deg,#001a52,#003087)', highlight: '#FFD700' },
   { id: 9,  emoji: '🏐', label: 'Vôlei',        bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#4d88ff' },
-  { id: 10, emoji: '🎾', label: 'Tênis',        bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#FFD700' },
+  { id: 10, emoji: '🥇', label: 'Medalha',      bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#FFD700' },
 ];
 
 let state = {
@@ -1055,8 +1188,36 @@ function sfxWin()     {
 function sfxLose()    { [400,300,200].forEach((f,i) => playNote(f, i*0.18, 0.22, 'sawtooth', 0.2)); }
 function sfxTick()    { playNote(880, 0, 0.04, 'square', 0.08); }
 
+function updateBoardCSS() {
+  const board = document.getElementById('game-board');
+  if (!board) return;
+  board.style.gridTemplateColumns = `repeat(${CONFIG.cols}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${CONFIG.rows}, 1fr)`;
+  board.style.aspectRatio = `${CONFIG.cols} / ${CONFIG.rows}`;
+}
+
+function setDifficulty(diff) {
+  currentDifficulty = diff;
+  const d = DIFFICULTIES[diff];
+  CONFIG.timeLimit   = d.timeLimit;
+  CONFIG.maxAttempts = d.maxAttempts;
+  CONFIG.cols        = d.cols;
+  CONFIG.rows        = d.rows;
+  updateBoardCSS();
+  document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.diff === diff);
+  });
+  const cycleLabel = document.getElementById('diff-cycle-label');
+  if (cycleLabel) cycleLabel.textContent = DIFF_LABELS[diff];
+  if (!state.hasStarted || state.gameOver) {
+    state.timeLeft = CONFIG.timeLimit;
+    updateHUD();
+  }
+}
+
 function buildSponsors() {
   const track = document.getElementById('sponsors-track');
+  if (!track) return;
   track.innerHTML = '';
   SPONSORS.forEach(sp => {
     const div = document.createElement('div');
@@ -1168,6 +1329,11 @@ function startGame() {
   if (startScreen) startScreen.classList.add('hidden');
   if (restartBtn) restartBtn.classList.remove('hidden');
 
+  document.querySelectorAll('.diff-btn').forEach(b => b.disabled = true);
+  const cycleBtn = document.getElementById('diff-cycle-btn');
+  if (cycleBtn) cycleBtn.disabled = true;
+  updateBoardCSS();
+
   clearInterval(state.timerInterval);
   clearTimeout(state.idleTimer);
   clearInterval(state.idleInterval);
@@ -1204,8 +1370,14 @@ function backToStartScreen() {
   state.attempts = 0;
   state.pairsFound = 0;
 
+  document.getElementById('game-board').innerHTML = '';
+  state.cards = [];
+
   hideOverlay();
   updateHUD();
+  document.querySelectorAll('.diff-btn').forEach(b => b.disabled = false);
+  const cycleBtnBack = document.getElementById('diff-cycle-btn');
+  if (cycleBtnBack) cycleBtnBack.disabled = false;
 
   const startScreen = document.getElementById('start-screen');
   const restartBtn = document.getElementById('btn-restart');
@@ -1502,6 +1674,29 @@ document.getElementById('btn-start-main').addEventListener('touchstart', (e) => 
 }, { passive: false });
 
 buildSponsors();
+
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!btn.disabled) setDifficulty(btn.dataset.diff);
+  });
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (!btn.disabled) setDifficulty(btn.dataset.diff);
+  }, { passive: false });
+});
+
+const diffCycleBtn = document.getElementById('diff-cycle-btn');
+if (diffCycleBtn) {
+  diffCycleBtn.addEventListener('click', () => {
+    if (!diffCycleBtn.disabled) cycleDifficulty();
+  });
+  diffCycleBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (!diffCycleBtn.disabled) cycleDifficulty();
+  }, { passive: false });
+}
+
+setDifficulty('medium');
 </script>
   <script>
     if ('serviceWorker' in navigator) {
