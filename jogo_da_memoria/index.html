@@ -461,6 +461,15 @@
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.1);
     }
 
+    .card-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.22);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .card-front .card-emoji {
       font-size: clamp(28px, 6vw, 68px);
       line-height: 1;
@@ -984,15 +993,15 @@ const SPONSORS = [
 
 const CARD_TYPES = [
   { id: 1,  emoji: '🏃', label: 'Corrida',      bg: 'linear-gradient(135deg,#001a52,#003087)', highlight: '#4d88ff' },
-  { id: 2,  emoji: '🥇', label: 'Medalha',      bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#FFD700' },
-  { id: 3,  emoji: '👟', label: 'Tenis',        bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#4d88ff' },
+  { id: 2,  emoji: '🏆', label: 'Troféu',       bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#FFD700' },
+  { id: 3,  emoji: '⚽', label: 'Futebol',      bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#4d88ff' },
   { id: 4,  emoji: '🚴', label: 'Ciclismo',     bg: 'linear-gradient(135deg,#003087,#4d88ff)', highlight: '#ffffff' },
   { id: 5,  logo: '../img/teora.png', label: 'Teora Solutions', bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#FFD700' },
-  { id: 6,  logo: '../img/360.JPG', label: 'Siliga360°', bg: 'linear-gradient(135deg,#001a52,#003087)', highlight: '#FFD700' },
+  { id: 6,  logo: '../img/360.jpg', label: 'Siliga360°', bg: 'linear-gradient(135deg,#001a52,#003087)', highlight: '#FFD700' },
   { id: 7,  emoji: '🤸', label: 'Atletismo',    bg: 'linear-gradient(135deg,#002266,#0052cc)', highlight: '#4d88ff' },
   { id: 8,  emoji: '🏋️', label: 'Treino',       bg: 'linear-gradient(135deg,#001a52,#003087)', highlight: '#FFD700' },
-  { id: 9,  emoji: '🎽', label: 'Equipe',       bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#4d88ff' },
-  { id: 10, emoji: '🏅', label: 'Corrida 36°',  bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#FFD700' },
+  { id: 9,  emoji: '🏐', label: 'Vôlei',        bg: 'linear-gradient(135deg,#003087,#0052cc)', highlight: '#4d88ff' },
+  { id: 10, emoji: '🎾', label: 'Tênis',        bg: 'linear-gradient(135deg,#002266,#003087)', highlight: '#FFD700' },
 ];
 
 let state = {
