@@ -749,43 +749,6 @@
       box-shadow: 0 0 8px var(--fire2);
     }
 
-    /* ── SPLASH ── */
-    #splash {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background:
-        radial-gradient(ellipse 90% 60% at 50% 30%, rgba(0,82,204,0.38) 0%, transparent 65%),
-        linear-gradient(160deg, #001a52 0%, #003087 45%, #002266 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(20px, 4vh, 44px);
-      cursor: pointer;
-      touch-action: manipulation;
-      transition: opacity 0.35s ease;
-      user-select: none;
-    }
-    #splash img {
-      max-height: 42vh;
-      max-width: 82vw;
-      object-fit: contain;
-      filter: drop-shadow(0 8px 28px rgba(0,0,0,0.5));
-    }
-    #splash-hint {
-      color: rgba(255,255,255,0.72);
-      font-size: clamp(14px, 2.5vw, 20px);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-family: 'Georgia', serif;
-      animation: splash-pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes splash-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.55; transform: scale(1.05); }
-    }
-
     #difficulty-selector {
       gap: 4px;
       flex-shrink: 0;
@@ -1016,11 +979,6 @@
 </head>
 <body>
 
-<div id="splash">
-  <img src="../img/ARTE CORRIDA_20260430_134648_0000.png" alt="36ª Corrida do Trabalhador" />
-  <span id="splash-hint">Toque para iniciar</span>
-</div>
-
 <div id="app">
   <div style="width:100%;background:linear-gradient(135deg, #003087 0%, #001a52 100%);display:flex;justify-content:center;">
     <img src="../img/ARTE CORRIDA_20260430_134648_0000.png" alt="Slogan 36ª Corrida do Trabalhador" style="width:100%;max-width:659px;max-height:1088px;display:block;object-fit:contain;" />
@@ -1082,7 +1040,7 @@
   </div>
 
   <div id="footer">
-    <a href="../index.html" class="memory-home-link">Home</a>
+    <a href="#" class="memory-home-link" onclick="(window.parent !== window ? window.parent : window).postMessage('go-home','*'); return false;">Home</a>
     36° Corrida do Trabalhador
     <div style="width:100%;display:flex;justify-content:center;margin-top:6px;">
       <img src="../img/ARTE CORRIDA.png" alt="Arte Corrida" style="max-width:240px;width:100%;height:auto;object-fit:contain;" />
@@ -1110,6 +1068,12 @@
 </div>
 
 <script>
+(function () {
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if (req) req.call(el).catch(() => {});
+})();
+
 const CONFIG = {
   eventTitle: '36° Corrida do Trabalhador',
   timeLimit: 60,
@@ -1664,20 +1628,6 @@ function requestFullscreen() {
     || el.msRequestFullscreen;
   if (req) req.call(el).catch(() => {});
 }
-
-(function () {
-  const splash = document.getElementById('splash');
-  function dismiss(e) {
-    e.preventDefault();
-    requestFullscreen();
-    splash.style.opacity = '0';
-    setTimeout(() => splash.remove(), 360);
-    splash.removeEventListener('click',      dismiss);
-    splash.removeEventListener('touchstart', dismiss);
-  }
-  splash.addEventListener('click',      dismiss);
-  splash.addEventListener('touchstart', dismiss, { passive: false });
-})();
 
 document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement) {
